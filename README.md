@@ -27,6 +27,33 @@ filter_9
 	 Through, loss -3.85[dB]
 ```
 Also contains useful functions that can identify pass bands in S-parameter files.
+Help:
+```
+usage: filter_identification.py [-h] [--passband-threshold PASSBAND_THRESHOLD]
+                                [--isolation-threshold ISOLATION_THRESHOLD]
+                                [--merge-distance MERGE_DISTANCE] [--plot]
+                                [touchstone [touchstone ...]]
+
+Automatic identification of filters in s-parameters
+
+positional arguments:
+  touchstone            S2P files to identify
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --passband-threshold PASSBAND_THRESHOLD, -pt PASSBAND_THRESHOLD
+                        Threshold for determining passband relative to max
+                        value of S21. Default -3dB
+  --isolation-threshold ISOLATION_THRESHOLD, -it ISOLATION_THRESHOLD
+                        Threshold for determining isolation relative to max
+                        value of s21. Default -10dB
+  --merge-distance MERGE_DISTANCE, -md MERGE_DISTANCE
+                        For denoising. If passbands are closer (1+md)*bw they
+                        are merged in to one. Default 0.05
+  --plot, -p            Plot filter data
+
+```
+
 
 ## mixer_sim.py
 Simulate spectral components from a mixer. Adds and keeps track of harmonics. Can be used with single frequency simulations or s21 can be read from a s2p-file to simulate spectral response.
@@ -38,6 +65,67 @@ $ ./mixer_sim.py --rf-filter bandpassfilterbank/denoised/filter_1.s2p filters/de
 ```
 
 Will show three figures, one with input parameters, one with all spectral components on IF and one with all spectral components on IF filtered by IF-filter.
+Help:
+```
+usage: mixer_sim.py [-h] [--rf-filter [RF_FILTER [RF_FILTER ...]]]
+                    [--rf-frequency RF_FREQUENCY]
+                    [--if-filter [IF_FILTER [IF_FILTER ...]]]
+                    [--lo-frequency LO_FREQUENCY] [--lo-auto-lsb]
+                    [--lo-auto-usb] [--no-legend]
+
+Calculate harmonic transfer functions for mixers
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --rf-filter [RF_FILTER [RF_FILTER ...]], -rffi [RF_FILTER [RF_FILTER ...]]
+                        S2P file containing rf (preselector) filter. S21 will
+                        be used
+  --rf-frequency RF_FREQUENCY, -rffr RF_FREQUENCY
+                        Single tone representing RF signal
+  --if-filter [IF_FILTER [IF_FILTER ...]], -iff [IF_FILTER [IF_FILTER ...]]
+                        S2P file containing if (roofing) filter. S21 will be
+                        used
+  --lo-frequency LO_FREQUENCY, -lof LO_FREQUENCY
+                        Frequency of LO
+  --lo-auto-lsb, -lal   Automatically determine LO frequency so rf lsb will
+                        end up in middle of IF-filter
+  --lo-auto-usb, -lau   Automatically determine LO frequency so rf usb will
+                        end up in middle of IF-filter
+  --no-legend, -nl      Do not display legend in plots containing spectral
+                        components
+
+```
 
 ## remove_noise.py
 Remove noise from s-parameter files. 
+Help:
+```
+usage: remove_noise.py [-h] [--write WRITE] [--epsilon [EPSILON]]
+                       [--filter-length [FILTER_LENGTH]]
+                       [--threshold [THRESHOLD]]
+                       [--dilation [{[0.000000-1.000000]}]] [--plot]
+                       input
+
+Condition s2p-files by removing trace noise du to low signal level
+
+positional arguments:
+  input                 S2P file to condition
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --write WRITE, -w WRITE
+                        Write conditioned data to this s2p-file
+  --epsilon [EPSILON], -e [EPSILON]
+                        Replace noise with this value in dB. Default -130 dB
+  --filter-length [FILTER_LENGTH], -f [FILTER_LENGTH]
+                        Number of taps in averaging filter. Default 50 taps
+  --threshold [THRESHOLD], -t [THRESHOLD]
+                        Threshold in dB for noise. Applied to second
+                        derivative of s-parameter filtered using filter above.
+                        Default 4 dB
+  --dilation [{[0.000000-1.000000]}], -d [{[0.000000-1.000000]}]
+                        Dilation threshold to make contiguous noise regions.
+                        Default 0.1
+  --plot, -p            Plot result
+
+```

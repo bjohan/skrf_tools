@@ -175,7 +175,7 @@ if __name__ == "__main__":
             allNetwork.append(rf.Network(file))
         return allNetwork;
         
-    parser = argparse.ArgumentParser(description="Calculate harmonic transfer functions for mixers")
+    parser = argparse.ArgumentParser(description="Automatic identification of filters in s-parameters")
     parser.add_argument('touchstone',  help='S2P files to identify', nargs = '*')
     parser.add_argument('--passband-threshold', '-pt', help="Threshold for determining passband relative to max value of S21. Default -3dB", type=float, default=-3)
     parser.add_argument('--isolation-threshold', '-it', help="Threshold for determining isolation relative to max value of s21. Default -10dB", type=float, default=-10)
