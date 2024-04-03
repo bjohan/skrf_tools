@@ -219,9 +219,10 @@ def cw_spectrum(f, watts, pfx='', **kwargs):
 
 
 class MixerModel:
-    def __init__(self):
-        self.loss = np.array([0, 27, 12, 33, 22])+12
-        #self.loss = np.array([0])+12
+    def __init__(self, lo_harmonics, rf_harmonics):
+        self.lo_loss = (np.array([0, 27, 12, 33, 22])+12)[:lo_harmonics]
+        self.rf_loss = dBToP(np.array([0, -40, -60, -80, -80]))[:rf_harmonics]
+        #self.lo_loss = np.array([0])+12
         self.loIfIsolation=25;
         self.loRfIsolation=25;
         self.rfIfIsolation=25;
@@ -234,7 +235,7 @@ class MixerModel:
         outS.s = np.zeros(outS.s.shape)
         outS+= rfSpectrum.power_scaled(dBToP(-self.rfIfIsolation))
 
-        for l, n in zip(self.loss, range(len(self.loss))):
+        for l, n in zip(self.lo_loss, range(len(self.lo_loss))):
             loh = (n+1)*fLo
             loS =  cw_spectrum(fLo, loPower*dBToP(-self.rfIfIsolation), pfx='lo ', color=colors[n], fmt='-x')
             #outS += cw_spectrum(loh, loPower*dBToP(-self.rfIfIsolation), color=colors[n], fmt='-x')
@@ -245,8 +246,9 @@ class MixerModel:
             cs = copy.deepcopy(rfSpectrum)
             cs.color = colors[n]
             #rfWithHarmonics = cs.with_harmonics(dBToP(np.array([0, -40, -60, -80])))
-            rfWithHarmonics = cs.with_harmonics(dBToP(np.array([0, -40, -60])))
+            #rfWithHarmonics = cs.with_harmonics(dBToP(np.array([0, -40, -60])))
             #rfWithHarmonics = cs.with_harmonics(dBToP(np.array([0])))
+            rfWithHarmonics = cs.with_harmonics(self.rf_loss)
             lsb = rfWithHarmonics.frequency_shifted(-loh, name="%dLO"%(-(n+1)))
             usb = rfWithHarmonics.frequency_shifted(loh, name="%dLO"%(n+1))
             lsb = lsb.power_scaled(dBToP(-l))
@@ -280,6 +282,8 @@ if __name__ == "__main__":
     parser.add_argument('--lo-frequency', '-lof', help="Frequency of LO", type=float)
     parser.add_argument('--lo-auto-lsb', '-lal', help="Automatically determine LO frequency so rf lsb will end up in middle of IF-filter", action='store_true')
     parser.add_argument('--lo-auto-usb', '-lau', help="Automatically determine LO frequency so rf usb will end up in middle of IF-filter", action='store_true')
+    parser.add_argument('--lo-harmonics', '-lh', help="Number of lo harmonics to consider, default = 5", type=int, default=5, choices=range(1,6))
+    parser.add_argument('--rf-harmonics', '-rh', help="Number of rf harmonics to consider, default = 3", type=int, default=3, choices=range(1,6))
     parser.add_argument('--no-legend', '-nl', help="Do not display legend in plots containing spectral components", action='store_true')
     args = parser.parse_args()
     ifFilters = None
@@ -313,7 +317,7 @@ if __name__ == "__main__":
         lof = abs(ifFreq-rfFreq)
     if args.lo_auto_lsb:
         lof = ifFreq+rfFreq
-    m = MixerModel()
+    m = MixerModel(args.lo_harmonics, args.rf_harmonics)
 
     plt.figure();
     cw_spectrum(lof, 0.001, 'lo ').plot_dbm(show=False)

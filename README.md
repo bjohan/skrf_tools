@@ -67,32 +67,28 @@ $ ./mixer_sim.py --rf-filter bandpassfilterbank/denoised/filter_1.s2p filters/de
 Will show three figures, one with input parameters, one with all spectral components on IF and one with all spectral components on IF filtered by IF-filter.
 Help:
 ```
-usage: mixer_sim.py [-h] [--rf-filter [RF_FILTER [RF_FILTER ...]]]
-                    [--rf-frequency RF_FREQUENCY]
-                    [--if-filter [IF_FILTER [IF_FILTER ...]]]
-                    [--lo-frequency LO_FREQUENCY] [--lo-auto-lsb]
-                    [--lo-auto-usb] [--no-legend]
+usage: mixer_sim.py [-h] [--rf-filter [RF_FILTER ...]] [--rf-frequency RF_FREQUENCY] [--if-filter [IF_FILTER ...]] [--lo-frequency LO_FREQUENCY] [--lo-auto-lsb] [--lo-auto-usb]
+                    [--lo-harmonics {1,2,3,4,5}] [--rf-harmonics {1,2,3,4,5}] [--no-legend]
 
 Calculate harmonic transfer functions for mixers
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
-  --rf-filter [RF_FILTER [RF_FILTER ...]], -rffi [RF_FILTER [RF_FILTER ...]]
-                        S2P file containing rf (preselector) filter. S21 will
-                        be used
+  --rf-filter [RF_FILTER ...], -rffi [RF_FILTER ...]
+                        S2P file containing rf (preselector) filter. S21 will be used
   --rf-frequency RF_FREQUENCY, -rffr RF_FREQUENCY
                         Single tone representing RF signal
-  --if-filter [IF_FILTER [IF_FILTER ...]], -iff [IF_FILTER [IF_FILTER ...]]
-                        S2P file containing if (roofing) filter. S21 will be
-                        used
+  --if-filter [IF_FILTER ...], -iff [IF_FILTER ...]
+                        S2P file containing if (roofing) filter. S21 will be used
   --lo-frequency LO_FREQUENCY, -lof LO_FREQUENCY
                         Frequency of LO
-  --lo-auto-lsb, -lal   Automatically determine LO frequency so rf lsb will
-                        end up in middle of IF-filter
-  --lo-auto-usb, -lau   Automatically determine LO frequency so rf usb will
-                        end up in middle of IF-filter
-  --no-legend, -nl      Do not display legend in plots containing spectral
-                        components
+  --lo-auto-lsb, -lal   Automatically determine LO frequency so rf lsb will end up in middle of IF-filter
+  --lo-auto-usb, -lau   Automatically determine LO frequency so rf usb will end up in middle of IF-filter
+  --lo-harmonics {1,2,3,4,5}, -lh {1,2,3,4,5}
+                        Number of lo harmonics to consider, default = 5
+  --rf-harmonics {1,2,3,4,5}, -rh {1,2,3,4,5}
+                        Number of rf harmonics to consider, default = 3
+  --no-legend, -nl      Do not display legend in plots containing spectral components
 
 ```
 
