@@ -1,4 +1,4 @@
-#!/usr/bin/python3.6
+#!/usr/bin/python3
 import skrf as rf
 from matplotlib import pyplot as plt
 import numpy as np
