@@ -98,6 +98,10 @@ optional arguments:
 
 ## remove_noise.py
 Remove noise from s-parameter files. 
+Example usage:
+```
+$ ./remove_noise.py noisy.s2p --write denoised.s2p --plot
+```
 Help:
 ```
 usage: remove_noise.py [-h] [--write WRITE] [--epsilon [EPSILON]]
