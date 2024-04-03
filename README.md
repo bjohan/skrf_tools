@@ -26,3 +26,18 @@ filter_8
 filter_9
 	 Through, loss -3.85[dB]
 ```
+Also contains useful functions that can identify pass bands in S-parameter files.
+
+## mixer_sim.py
+Simulate spectral components from a mixer. Adds and keeps track of harmonics. Can be used with single frequency simulations or s21 can be read from a s2p-file to simulate spectral response.
+Multiple s2p-files can be given for if and rf filter, which will simply cascade to form combined s-parameters. Note that there will be a lot of spectral components som the legend will be very comperhensive, use -nl or --no-legend to hide.
+
+Example usage:
+```
+$ ./mixer_sim.py --rf-filter bandpassfilterbank/denoised/filter_1.s2p filters/denoised/filter_circtel_lm9_5400.s2p --if-filter if_filters/denoised/filter_ewt_14_2_to_14_55.s2p -lau -nl
+```
+
+Will show three figures, one with input parameters, one with all spectral components on IF and one with all spectral components on IF filtered by IF-filter.
+
+## remove_noise.py
+Remove noise from s-parameter files. 
