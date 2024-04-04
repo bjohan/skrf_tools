@@ -222,7 +222,6 @@ class MixerModel:
     def __init__(self, lo_harmonics, rf_harmonics):
         self.lo_loss = (np.array([0, 27, 12, 33, 22])+12)[:lo_harmonics]
         self.rf_loss = dBToP(np.array([0, -40, -60, -80, -80]))[:rf_harmonics]
-        #self.lo_loss = np.array([0])+12
         self.loIfIsolation=25;
         self.loRfIsolation=25;
         self.rfIfIsolation=25;
@@ -245,9 +244,6 @@ class MixerModel:
                 
             cs = copy.deepcopy(rfSpectrum)
             cs.color = colors[n]
-            #rfWithHarmonics = cs.with_harmonics(dBToP(np.array([0, -40, -60, -80])))
-            #rfWithHarmonics = cs.with_harmonics(dBToP(np.array([0, -40, -60])))
-            #rfWithHarmonics = cs.with_harmonics(dBToP(np.array([0])))
             rfWithHarmonics = cs.with_harmonics(self.rf_loss)
             lsb = rfWithHarmonics.frequency_shifted(-loh, name="%dLO"%(-(n+1)))
             usb = rfWithHarmonics.frequency_shifted(loh, name="%dLO"%(n+1))
